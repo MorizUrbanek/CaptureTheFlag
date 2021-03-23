@@ -13,6 +13,7 @@ public class TextManager : MonoBehaviour
 
     public void ChangeText(string newtext,bool autoremove = false, float cleartime = 5)
     {
+        if (text == null){ return; }
         text.text = newtext;
         if (autoremove)
         {
