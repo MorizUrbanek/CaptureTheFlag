@@ -4,28 +4,14 @@ public class Gun : MonoBehaviour
 {
     public float damage = 10f;
     public float range = 100f;
-    public float cubePlaceRange = 40f;
     public float impactForce = 30f;
 
     public Camera fpsCam;
-    public GameObject cube;
-    public GameObject ghostCube;
     public Transform shootPoint;
-    public Transform anchorPoint;
+    
     public LineRenderer bullettrail;
-    public GameObject gun;
 
-    bool shootMode;
-    [SerializeField] private int blockCount = 150;
-    private RaycastHit hit;
     private Ray ray;
-    private GameObject ghostCubeClone;
-
-    private void Start()
-    {
-        ghostCubeClone = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity);
-        SetShootMode(false);
-    }
 
     // Update is called once per frame
     void Update()
@@ -34,39 +20,7 @@ public class Gun : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if (shootMode)
-            {
-                Shoot();
-            }
-            else if (!shootMode && blockCount > 0)
-            {
-                SetBlock();
-                //DoRayCast(true);
-            }
-        }
-
-        if (Input.GetButtonDown("Fire2") && !shootMode)
-        {
-            RemoveBlock();
-           //DoRayCast(false);
-        }
-        
-    }
-    private void FixedUpdate()
-    {
-        Physics.Raycast(ray, out hit, cubePlaceRange);
-        if (hit.collider != null)
-        {
-            if (!ghostCubeClone.activeSelf && !shootMode)
-            {
-                ghostCubeClone.SetActive(true);
-            }
-            Vector3 postition = GetBlockPosition();
-            ghostCubeClone.transform.localPosition = postition;
-        }
-        else if(ghostCubeClone.activeSelf)
-        {
-            ghostCubeClone.SetActive(false);
+            Shoot();
         }
     }
 
@@ -98,47 +52,6 @@ public class Gun : MonoBehaviour
         lineR.SetPosition(0, shootPoint.position);
         lineR.SetPosition(1, hitpoint);
 
-    }
-
-    private void RemoveBlock()
-    {
-        Physics.Raycast(ray, out hit,cubePlaceRange);
-        if (hit.collider != null)
-        {
-            if (hit.collider.tag == "Block")
-            {
-                Destroy(hit.collider.gameObject);
-                blockCount++;
-            }
-        }
-    }
-
-    private void SetBlock()
-    {
-        Physics.Raycast(ray, out hit, cubePlaceRange);
-        if (hit.collider != null)
-        {
-            Vector3 postition = GetBlockPosition();
-            Instantiate(cube, postition, Quaternion.identity);
-            blockCount--;
-        }
-    }
-
-    private Vector3 GetBlockPosition()
-    {
-        hit.point -= anchorPoint.position;
-        return (new Vector3(
-            Mathf.Round(hit.point.x + hit.normal.x / 2),
-            Mathf.Round(hit.point.y + hit.normal.y / 2),
-            Mathf.Round(hit.point.z + hit.normal.z / 2))
-            + anchorPoint.position);
-    }
-
-    public void SetShootMode(bool mode)
-    {
-        shootMode = mode;
-        ghostCubeClone.SetActive(!shootMode);
-        gun.SetActive(shootMode);
     }
 
     //void DoRayCast(bool build)

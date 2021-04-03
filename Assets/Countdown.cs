@@ -5,7 +5,8 @@ using UnityEngine;
 public class Countdown : MonoBehaviour
 {
 
-    public Gun gun;
+    public GameObject weapons, cubePlacer;
+    public PlaceCube ghostCube;
     TextManager text;
     float startTime, updateSteps = 0.2f, countdownTime = 20f , endTime;
 
@@ -23,7 +24,9 @@ public class Countdown : MonoBehaviour
     {
         if (Time.time >= endTime)
         {
-            gun.SetShootMode(true);
+            weapons.SetActive(true);
+            ghostCube.SetGhostCubeActive(false);
+            cubePlacer.SetActive(false);
             CancelInvoke("UpdateCoundDown");
             text.ClearText();
         }
