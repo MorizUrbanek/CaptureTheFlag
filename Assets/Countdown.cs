@@ -8,7 +8,7 @@ public class Countdown : MonoBehaviour
     public GameObject weapons, cubePlacer;
     public PlaceCube ghostCube;
     TextManager text;
-    float startTime, updateSteps = 0.2f, countdownTime = 20f , endTime;
+    float startTime, updateSteps = 0.2f, countdownTime = 5f , endTime;
 
     void Start()
     {

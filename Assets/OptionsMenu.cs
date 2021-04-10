@@ -5,16 +5,20 @@ using TMPro;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public Slider slider;
-    public TextManager sensitivityValue;
+    public Slider sensitivitySlider,volumeSlider;
+    public TextManager sensitivityValue, volumeValue;
     public TMP_Dropdown resolutionsDropdown;
-    static private float sensitivity = 1f;
+    static private float sensitivity = 1f, volume = 50f;
     Resolution[] resolutions;
 
     private void Start()
     {
-        slider.value = sensitivity;
+        sensitivitySlider.value = sensitivity;
         sensitivityValue.ChangeText(sensitivity.ToString("0.00"));
+
+        volumeSlider.value = volume;
+        volumeValue.ChangeText(volume.ToString("0"));
+
         resolutions = Screen.resolutions;
 
         resolutionsDropdown.ClearOptions();
@@ -37,10 +41,16 @@ public class OptionsMenu : MonoBehaviour
         resolutionsDropdown.RefreshShownValue();
     }
 
+    public void Setsensitivity(float newSensitivity)
+    {
+        sensitivity = newSensitivity;
+        sensitivityValue.ChangeText(sensitivity.ToString("0.00"));
+    }
+    
     public void SetVolume(float newVolume)
     {
-        sensitivity = newVolume;
-        sensitivityValue.ChangeText(sensitivity.ToString("0.00"));
+        volume = newVolume;
+        volumeValue.ChangeText(volume.ToString("0.00"));
     }
 
     public void SetResolution(int resolutionIndex)
@@ -53,5 +63,8 @@ public class OptionsMenu : MonoBehaviour
     {
         return sensitivity;
     }
-    
+    static public float GetVolume()
+    {
+        return volume;
+    }
 }

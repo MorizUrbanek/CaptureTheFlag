@@ -42,7 +42,7 @@ public class PlaceCube : MonoBehaviour
         Physics.Raycast(ray, out hit, cubePlaceRange);
         if (hit.collider != null)
         {
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.gameObject.layer == 8)
             {
                 if (!ghostCubeClone.activeSelf)
                 {
@@ -50,6 +50,10 @@ public class PlaceCube : MonoBehaviour
                 }
                 Vector3 postition = GetBlockPosition();
                 ghostCubeClone.transform.position = postition;
+            }
+            else if (ghostCubeClone.activeSelf)
+            {
+                ghostCubeClone.SetActive(false);
             }
         }
         else if (ghostCubeClone.activeSelf)
@@ -75,7 +79,7 @@ public class PlaceCube : MonoBehaviour
     {
         if (hit.collider != null)
         {
-            if (hit.collider.tag == "Block")
+            if (hit.collider.tag == "Block" || hit.collider.gameObject.layer == 8)
             {
                 Instantiate(cube, ghostCubeClone.transform.position, Quaternion.identity);
                 blockCount--;

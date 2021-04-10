@@ -3,10 +3,8 @@ using UnityEngine.UI;
 
 public class MoveCamera : MonoBehaviour
 {
-    public Material material, text;
-    public Image sliderFill;
-    float xMove, yMove, speed = 30f, intensity, factor;
-    Color color;
+    public ColorScript color;
+    float xMove, yMove, speed = 30f;
     Vector3 previousPosition, direction;
     public Camera cam;
 
@@ -29,15 +27,7 @@ public class MoveCamera : MonoBehaviour
         }
         MoveCam();
         previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);
-        color = new Vector4(Mathf.Clamp((1f / 360f) * Mathf.Abs(transform.rotation.eulerAngles.x), 0.00000000000001f, 1),
-                            Mathf.Clamp((1f / 360f) * Mathf.Abs(transform.rotation.eulerAngles.y), 0.00000000000001f, 1),
-                            Mathf.Clamp((1f / 360f) * Mathf.Abs(transform.rotation.eulerAngles.z), 0.00000000000001f, 1), 0f);
-        intensity = (color.r + color.g + color.b) / 3f;
-        factor = 2f / intensity;
-        color = new Color(color.r * factor, color.g * factor, color.b * factor);
-        material.SetColor("GridColor", color);
-        text.SetColor("_GlowColor", color);
-        sliderFill.color = color;
+        color.ChangeColor();
     }
 
     private void MoveCam()
