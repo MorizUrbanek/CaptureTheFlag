@@ -17,7 +17,7 @@ public class OptionsMenu : MonoBehaviour
         sensitivityValue.ChangeText(sensitivity.ToString("0.00"));
 
         volumeSlider.value = volume;
-        volumeValue.ChangeText(volume.ToString("0"));
+        volumeValue.ChangeText(volume.ToString("0.0"));
 
         resolutions = Screen.resolutions;
 

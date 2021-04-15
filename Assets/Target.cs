@@ -3,6 +3,8 @@
 public class Target : MonoBehaviour
 {
     public float health = 50f;
+    Collider c;
+    Rigidbody rb;
 
     public void TakeDamage(float damage)
     {
@@ -17,4 +19,9 @@ public class Target : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    Debug.Log(collision.gameObject.name);
+    //}
 }

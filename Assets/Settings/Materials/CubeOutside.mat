@@ -35,5 +35,5 @@ Material:
     m_Floats: []
     m_Colors:
     - FillColor: {r: 0, g: 0, b: 0, a: 0}
-    - GridColor: {r: 0.48998648, g: 2.9914315, b: 2.5185823, a: 1}
+    - GridColor: {r: 2.7913692, g: 0.5011633, b: 2.7074673, a: 1}
   m_BuildTextureStacks: []
