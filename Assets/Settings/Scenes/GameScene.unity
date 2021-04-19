@@ -1058,6 +1058,7 @@ MonoBehaviour:
   damage: 10
   range: 100
   impactForce: 50
+  damagePlayer: 1
   fpsCam: {fileID: 963194227}
   shootPoint: {fileID: 969766337}
   bullettrail: {fileID: 313863708330055208, guid: 7abf1f88c0cceaf4b91f129e0c2214b8,
@@ -1599,6 +1600,7 @@ MonoBehaviour:
   damage: 10
   range: 50
   impactForce: 50
+  damagePlayer: 0
   fpsCam: {fileID: 963194227}
   shootPoint: {fileID: 1504901680}
   bullettrail: {fileID: 313863708330055208, guid: 7abf1f88c0cceaf4b91f129e0c2214b8,

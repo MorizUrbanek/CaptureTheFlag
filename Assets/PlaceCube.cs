@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlaceCube : MonoBehaviour
 {
@@ -151,6 +152,7 @@ public class PlaceCube : MonoBehaviour
         {
             ghostCubesParent.SetActive(false);
         }
+
     }
 
     private void RemoveBlock()
@@ -172,13 +174,19 @@ public class PlaceCube : MonoBehaviour
         {
             if (hit.collider.tag == "Block" || hit.collider.gameObject.layer == 8)
             {
-                foreach (GameObject ghostCube in ghostCubes)
+                IsPlaceable isPlaceable;
+                foreach (GameObject ghostCube in ghostCubes.Where(i => i != null))
                 {
-                    if (ghostCube != null)
+                    isPlaceable = ghostCube.GetComponent<IsPlaceable>();
+                    if (isPlaceable != null)
                     {
-                        Instantiate(cube, ghostCube.transform.position, Quaternion.identity);
-                        blockCount--;
+                        if (isPlaceable.GetisPlaceable())
+                        {
+                            Instantiate(cube, ghostCube.transform.position, Quaternion.identity);
+                            blockCount--;
+                        }
                     }
+
                 }
                 
             }
