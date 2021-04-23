@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Mirror;
+using Cinemachine;
 
-public class PlaceCube : MonoBehaviour
+public class PlaceCube : NetworkBehaviour
 {
-    public Transform anchorPoint;
+    //public Transform anchorPoint;
     public Camera fpsCam;
     public GameObject cube;
     public GameObject ghostCube;
     public float cubePlaceRange = 40f;
-    public GameObject ghostCubesParent;
 
 
     [SerializeField] private int blockCount = 150;
@@ -21,18 +22,32 @@ public class PlaceCube : MonoBehaviour
     private GameObject[] ghostCubes = new GameObject[maxGhostCubes];
     private Vector3 addGhostCubeDirection = new Vector3(1, 0, 0);
     private bool isMirrored = false, currentState;
-    
+    private Vector3 anchorPoint = new Vector3(-49.5f,-.49999f,-49.5f);
+    private GameObject ghostCubesParent;
 
 
-    // Start is called before the first frame update
-    void Start()
+
+    //Start is called before the first frame update
+    //void Start()
+    //{
+    //    ghostCubesParent = new GameObject("ghostCubesParent");
+    //    CubesParent = new GameObject("CubesParent");
+    //    ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
+    //}
+
+    public override void OnStartAuthority()
     {
+        ghostCubesParent = new GameObject("ghostCubesParent");
         ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         ray = fpsCam.ScreenPointToRay(Input.mousePosition);
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
@@ -96,6 +111,10 @@ public class PlaceCube : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         Physics.Raycast(ray, out hit, cubePlaceRange);
         if (hit.collider != null)
         {
@@ -182,7 +201,7 @@ public class PlaceCube : MonoBehaviour
                     {
                         if (isPlaceable.GetisPlaceable())
                         {
-                            Instantiate(cube, ghostCube.transform.position, Quaternion.identity);
+                            CmdSpawnObject(ghostCube.transform.position);
                             blockCount--;
                         }
                     }
@@ -193,14 +212,23 @@ public class PlaceCube : MonoBehaviour
         }
     }
 
+    [Command]
+    public void CmdSpawnObject(Vector3 position)
+    {
+        GameObject serverCube = Instantiate(cube, position, Quaternion.identity);
+        NetworkServer.Spawn(serverCube);
+    }
+
+
+
     private Vector3 GetBlockPosition()
     {
-        hit.point -= anchorPoint.position;
+        hit.point -= anchorPoint;
         return (new Vector3(
             Mathf.Round(hit.point.x + hit.normal.x / 2),
             Mathf.Round(hit.point.y + hit.normal.y / 2),
             Mathf.Round(hit.point.z + hit.normal.z / 2))
-            + anchorPoint.position);
+            + anchorPoint);
     }
 
     public void SetGhostCubeActive(bool active)

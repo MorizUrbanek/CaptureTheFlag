@@ -15,7 +15,6 @@ public class MoveCamera : MonoBehaviour
 
     void Update()
     {
-       
         if (Input.GetMouseButtonDown(0))
         {
             previousPosition = cam.ScreenToViewportPoint(Input.mousePosition);

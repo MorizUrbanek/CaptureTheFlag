@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class MovePlayer : MonoBehaviour
+public class MovePlayer : NetworkBehaviour
 {
     public CharacterController controller;
 
@@ -18,6 +19,10 @@ public class MovePlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -40,5 +45,10 @@ public class MovePlayer : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public bool GetIsLocalPlayer()
+    {
+        return isLocalPlayer;
     }
 }

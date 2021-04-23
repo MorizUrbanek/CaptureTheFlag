@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Countdown : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Countdown : MonoBehaviour
     public GameObject weapons, cubePlacer;
     public PlaceCube ghostCube;
     TextManager text;
-    float startTime, updateSteps = 0.01f, countdownTime = 100f , endTime;
+    float startTime, updateSteps = 0.01f, countdownTime = 40f , endTime;
 
     void Start()
     {
@@ -36,5 +37,10 @@ public class Countdown : MonoBehaviour
             text.ChangeText(countdownTime.ToString("0.0"));
         }
     }
+
+    //void StartCountDown(Func<int,string> callBack)
+    //{
+
+    //}
 
 }

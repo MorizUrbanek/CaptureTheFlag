@@ -35,14 +35,14 @@ public class Weapon : MonoBehaviour
             {
                 if (hit.transform.tag == "Player")
                 {
-                    DoDamage(hit);
+                    DoDamageToPlayer(hit);
                 }
             }
             else
             {
                 if (hit.transform.tag == "Block")
                 {
-                    DoDamage(hit);
+                    DoDamageToBlock(hit);
                 }
             }
         }
@@ -59,7 +59,7 @@ public class Weapon : MonoBehaviour
 
     }
 
-    private void DoDamage(RaycastHit hit)
+    private void DoDamageToBlock(RaycastHit hit)
     {
         Target target = hit.transform.GetComponent<Target>();
         if (target != null)
@@ -70,6 +70,15 @@ public class Weapon : MonoBehaviour
         if (hit.rigidbody != null)
         {
             hit.rigidbody.AddForce(-hit.normal * impactForce);
+        }
+    }
+
+    private void DoDamageToPlayer(RaycastHit hit)
+    {
+        PlayerTarget target = hit.transform.GetComponent<PlayerTarget>();
+        if (target != null)
+        {
+            target.TakeDamage(damage);
         }
     }
 

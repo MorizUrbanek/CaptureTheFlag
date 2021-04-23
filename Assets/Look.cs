@@ -7,6 +7,7 @@ public class Look : MonoBehaviour
     private float mouseSensetivity = 100f;
 
     public Transform playerBody;
+    public MovePlayer player;
 
     float xRotation;
 
@@ -19,6 +20,10 @@ public class Look : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!player.isLocalPlayer)
+        {
+            return;
+        }
         float mouseX = Input.GetAxis("Mouse X") * mouseSensetivity * OptionsMenu.GetSensitivity() * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensetivity * OptionsMenu.GetSensitivity() * Time.deltaTime;
 
