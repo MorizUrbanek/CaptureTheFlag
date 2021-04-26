@@ -34,8 +34,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
-    - Color_9E1A69F9: {r: 3.4415908, g: 2.2703688, b: 0, a: 0}
-    - Color_F14E6B2C: {r: 0, g: 0, b: 0, a: 0}
     - FillColor: {r: 0, g: 0, b: 0, a: 0}
-    - GridColor: {r: 11.984314, g: 0, b: 0.87381434, a: 0}
+    - GridColor: {r: 3.7266974, g: 0, b: 3.6072528, a: 1}
   m_BuildTextureStacks: []

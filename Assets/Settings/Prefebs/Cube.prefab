@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 4401455378658636961}
   - component: {fileID: 4401455378658636962}
   - component: {fileID: 9091470979954777743}
-  - component: {fileID: -7316447612646376781}
-  - component: {fileID: -7088484465938951485}
+  - component: {fileID: 880390179254712757}
+  - component: {fileID: -3835146723117132813}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Block
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
---- !u!114 &-7316447612646376781
+--- !u!114 &880390179254712757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   visible: 0
   m_AssetId: 
   hasSpawned: 0
---- !u!114 &-7088484465938951485
+--- !u!114 &-3835146723117132813
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

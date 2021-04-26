@@ -181,7 +181,7 @@ public class PlaceCube : NetworkBehaviour
         {
             if (hit.collider.tag == "Block")
             {
-                Destroy(hit.collider.gameObject);
+                CmdDestroyObject(hit.collider.gameObject);
                 blockCount++;
             }
         }
@@ -201,7 +201,7 @@ public class PlaceCube : NetworkBehaviour
                     {
                         if (isPlaceable.GetisPlaceable())
                         {
-                            CmdSpawnObject(ghostCube.transform.position);
+                            CmdSpawnObject(ghostCube.transform.position,gameObject);
                             blockCount--;
                         }
                     }
@@ -213,10 +213,16 @@ public class PlaceCube : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSpawnObject(Vector3 position)
+    public void CmdSpawnObject(Vector3 position,GameObject owner)
     {
         GameObject serverCube = Instantiate(cube, position, Quaternion.identity);
-        NetworkServer.Spawn(serverCube);
+        NetworkServer.Spawn(serverCube, owner);
+    }
+
+    [Command]
+    public void CmdDestroyObject(GameObject cube)
+    {
+        NetworkServer.Destroy(cube);
     }
 
 

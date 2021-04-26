@@ -23,4 +23,10 @@ public class OpenOptionMenu : MonoBehaviour
             }
         }
     }
+
+    public void ReturnToGame()
+    {
+        optionMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 }

@@ -6,10 +6,10 @@ using System;
 public class Countdown : MonoBehaviour
 {
 
-    public GameObject weapons, cubePlacer;
+    public GameObject weapons;
     public PlaceCube ghostCube;
     TextManager text;
-    float startTime, updateSteps = 0.01f, countdownTime = 40f , endTime;
+    float startTime, updateSteps = 0.01f, countdownTime = 20f , endTime;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class Countdown : MonoBehaviour
         {
             weapons.SetActive(true);
             ghostCube.SetGhostCubeActive(false);
-            cubePlacer.SetActive(false);
+            ghostCube.enabled = false;
             CancelInvoke("UpdateCoundDown");
             text.ClearText();
         }
