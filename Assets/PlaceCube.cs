@@ -25,7 +25,12 @@ public class PlaceCube : NetworkBehaviour
     private Vector3 anchorPoint = new Vector3(-49.5f,-.49999f,-49.5f);
     private GameObject ghostCubesParent;
 
+    private Commands command;
 
+    private void Start()
+    {
+        command = GameObject.FindGameObjectWithTag("Player").GetComponent<Commands>();
+    }
 
     //Start is called before the first frame update
     //void Start()
@@ -181,7 +186,7 @@ public class PlaceCube : NetworkBehaviour
         {
             if (hit.collider.tag == "Block")
             {
-                CmdDestroyObject(hit.collider.gameObject);
+                command.CmdDestroyObject(hit.collider.gameObject);
                 blockCount++;
             }
         }
@@ -201,7 +206,7 @@ public class PlaceCube : NetworkBehaviour
                     {
                         if (isPlaceable.GetisPlaceable())
                         {
-                            CmdSpawnObject(ghostCube.transform.position,gameObject);
+                            command.SpawnObjectOnServer(ghostCube.transform.position , cube, gameObject);
                             blockCount--;
                         }
                     }
@@ -211,21 +216,6 @@ public class PlaceCube : NetworkBehaviour
             }
         }
     }
-
-    [Command]
-    public void CmdSpawnObject(Vector3 position,GameObject owner)
-    {
-        GameObject serverCube = Instantiate(cube, position, Quaternion.identity);
-        NetworkServer.Spawn(serverCube, owner);
-    }
-
-    [Command]
-    public void CmdDestroyObject(GameObject cube)
-    {
-        NetworkServer.Destroy(cube);
-    }
-
-
 
     private Vector3 GetBlockPosition()
     {
