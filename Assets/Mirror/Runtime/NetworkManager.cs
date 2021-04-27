@@ -192,9 +192,6 @@ namespace Mirror
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        public Transform Player1Spawn;
-        public Transform Player2Spawn;
-
         // virtual so that inheriting classes' Start() can call base.Start() too
         public virtual void Start()
         {

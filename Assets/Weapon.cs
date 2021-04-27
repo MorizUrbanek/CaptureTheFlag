@@ -67,10 +67,10 @@ public class Weapon : MonoBehaviour
             target.TakeDamage(damage);
         }
 
-        if (hit.rigidbody != null)
-        {
-            hit.rigidbody.AddForce(-hit.normal * impactForce);
-        }
+        //if (hit.rigidbody != null)
+        //{
+        //    hit.rigidbody.AddForce(-hit.normal * impactForce);
+        //}
     }
 
     private void DoDamageToPlayer(RaycastHit hit)
@@ -78,7 +78,7 @@ public class Weapon : MonoBehaviour
         PlayerTarget target = hit.transform.GetComponent<PlayerTarget>();
         if (target != null)
         {
-            target.TakeDamage(damage);
+            target.TakeDamage();
         }
     }
 

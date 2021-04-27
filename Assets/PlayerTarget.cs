@@ -1,37 +1,92 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerTarget : MonoBehaviour
+public class PlayerTarget : NetworkBehaviour
 {
-    public float health = 50f;
-    private float respwanTime = 5;
-    private bool isDeath = false;
+    public float maxHealth = 50f;
+    public float damageperHit = 10f;
+    
+    public bool isAttacker;
+    private bool isDeath = false, tookDamage = false;
 
-    public void TakeDamage(float damage)
+    [SyncVar]
+    [SerializeField] private float currentHealth;
+
+    public delegate void HealthChangedDelegate(float currentHealth);
+    public event HealthChangedDelegate EventHealthChanged;
+
+    #region Server
+    [Server]
+    private void SetHealth(float value)
     {
-        if (!isDeath)
+        currentHealth = value;
+        EventHealthChanged?.Invoke(currentHealth);
+    }
+
+    public override void OnStartServer()
+    {
+        SetHealth(maxHealth);
+    }
+
+    [Command]
+    private void CmdDealDamage()
+    {
+        Debug.Log("dealingdamage");
+        SetHealth(Mathf.Max(currentHealth - damageperHit, 0));
+    }
+
+    #endregion
+
+    #region Client
+
+    [ClientCallback]
+    private void Update()
+    {
+        if (!hasAuthority) { return; }
+        Debug.Log("tookdamage :"+tookDamage);
+        if (tookDamage) 
         {
-            health -= damage;
-            if (health <= 0)
-            {
-                Die();
-                //isDeath = true;
-            }
+            Debug.Log("dealdamge");
+            CmdDealDamage();
+            tookDamage = false;
         }
     }
 
-    void Die()
+    #endregion
+
+    public void TakeDamage()
     {
-        //Invoke("Respawn", respwanTime);
-        Respawn();
-        respwanTime += 2;
+        if (!isDeath)
+        {
+            Debug.Log("tookdamge");
+            tookDamage = true;
+        }
     }
 
-    void Respawn()
+    private void OnTriggerEnter(Collider other)
     {
-        health = 50f;
-        transform.position = new Vector3(Random.Range(-49, 49), 0.5f, Random.Range(-49, 49));
-        isDeath = false;
+        if (other.tag == "Flag" && isAttacker)
+        {
+            Destroy(other.gameObject);
+        }
     }
+
+    private void OnEnable()
+    {
+        EventHealthChanged += HandleHealthChange;
+    }
+
+    private void OnDisable()
+    {
+        EventHealthChanged -= HandleHealthChange;
+    }
+
+    [ClientRpc]
+    private void HandleHealthChange(float currentHealth)
+    {
+        this.currentHealth = currentHealth;
+    }
+
 }

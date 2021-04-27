@@ -197,7 +197,10 @@ public class PlaceCube : NetworkBehaviour
                 foreach (GameObject ghostCube in ghostCubes.Where(i => i != null))
                 {
                     isPlaceable = ghostCube.GetComponent<IsPlaceable>();
-                    if (isPlaceable != null)
+                    if (isPlaceable != null 
+                        && Mathf.Abs(ghostCube.transform.position.x) <= Mathf.Abs(anchorPoint.x)
+                        && ghostCube.transform.position.y >= Mathf.Abs(anchorPoint.y)
+                        && Mathf.Abs(ghostCube.transform.position.z) <= Mathf.Abs(anchorPoint.z))
                     {
                         if (isPlaceable.GetisPlaceable())
                         {

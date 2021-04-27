@@ -50,4 +50,10 @@ public class PlayerCameraController : NetworkBehaviour
         rayCam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerTransform.Rotate(Vector3.up * mouseX);
     }
+
+    public void SetmouseSensetivity(float value)
+    {
+        mouseSensetivity = value * 10;
+    }
+
 }

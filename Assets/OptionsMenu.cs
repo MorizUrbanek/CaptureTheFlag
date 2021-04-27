@@ -8,6 +8,7 @@ public class OptionsMenu : MonoBehaviour
     public Slider sensitivitySlider,volumeSlider;
     public TextManager sensitivityValue, volumeValue;
     public TMP_Dropdown resolutionsDropdown;
+    public PlayerCameraController camController;
     static private float sensitivity = 1f, volume = 50f;
     Resolution[] resolutions;
 
@@ -45,6 +46,7 @@ public class OptionsMenu : MonoBehaviour
     {
         sensitivity = newSensitivity;
         sensitivityValue.ChangeText(sensitivity.ToString("0.00"));
+        camController.SetmouseSensetivity(newSensitivity);
     }
     
     public void SetVolume(float newVolume)
