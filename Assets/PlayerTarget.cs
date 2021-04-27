@@ -9,7 +9,7 @@ public class PlayerTarget : NetworkBehaviour
     public float damageperHit = 10f;
     
     public bool isAttacker;
-    private bool isDeath = false, tookDamage = false;
+    private bool isDeath = false;// tookDamage = false;
 
     [SyncVar]
     [SerializeField] private float currentHealth;
@@ -45,25 +45,31 @@ public class PlayerTarget : NetworkBehaviour
     private void Update()
     {
         if (!hasAuthority) { return; }
-        Debug.Log("tookdamage :"+tookDamage);
-        if (tookDamage) 
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            Debug.Log("dealdamge");
             CmdDealDamage();
-            tookDamage = false;
         }
+        // Debug.Log("tookdamage :"+tookDamage);
+        //if (tookDamage) 
+        //{
+        //    Debug.Log("dealdamge");
+        //    CmdDealDamage();
+        //    tookDamage = false;
+        //}
     }
 
-    #endregion
-
+    [ClientCallback]
     public void TakeDamage()
     {
         if (!isDeath)
         {
             Debug.Log("tookdamge");
-            tookDamage = true;
+           // tookDamage = true;
         }
     }
+    #endregion
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -73,20 +79,20 @@ public class PlayerTarget : NetworkBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        EventHealthChanged += HandleHealthChange;
-    }
+    //private void OnEnable()
+    //{
+    //    EventHealthChanged += HandleHealthChange;
+    //}
 
-    private void OnDisable()
-    {
-        EventHealthChanged -= HandleHealthChange;
-    }
+    //private void OnDisable()
+    //{
+    //    EventHealthChanged -= HandleHealthChange;
+    //}
 
-    [ClientRpc]
-    private void HandleHealthChange(float currentHealth)
-    {
-        this.currentHealth = currentHealth;
-    }
+    //[ClientRpc]
+    //private void HandleHealthChange(float currentHealth)
+    //{
+    //    this.currentHealth = currentHealth;
+    //}
 
 }

@@ -18,20 +18,14 @@ public class PlaceCube : NetworkBehaviour
     private RaycastHit hit;
     private Ray ray;
     private int ghostCubeCount = 0, mode = 0;
-    private static int maxGhostCubes = 8;
+    private const int maxGhostCubes = 8;
     private GameObject[] ghostCubes = new GameObject[maxGhostCubes];
     private Vector3 addGhostCubeDirection = new Vector3(1, 0, 0);
     private bool isMirrored = false, currentState;
     private Vector3 anchorPoint = new Vector3(-49.5f,-.49999f,-49.5f);
     private GameObject ghostCubesParent;
 
-    private Commands command;
-
-    private void Start()
-    {
-        command = GameObject.FindGameObjectWithTag("Player").GetComponent<Commands>();
-    }
-
+   
     //Start is called before the first frame update
     //void Start()
     //{
@@ -186,7 +180,7 @@ public class PlaceCube : NetworkBehaviour
         {
             if (hit.collider.tag == "Block")
             {
-                command.CmdDestroyObject(hit.collider.gameObject);
+                CmdDestroyObject(hit.collider.gameObject);
                 blockCount++;
             }
         }
@@ -209,7 +203,7 @@ public class PlaceCube : NetworkBehaviour
                     {
                         if (isPlaceable.GetisPlaceable())
                         {
-                            command.SpawnObjectOnServer(ghostCube.transform.position , cube, gameObject);
+                            CmdSpawnObject(ghostCube.transform.position);
                             blockCount--;
                         }
                     }
@@ -218,6 +212,19 @@ public class PlaceCube : NetworkBehaviour
                 
             }
         }
+    }
+
+    [Command]
+    public void CmdSpawnObject(Vector3 position)
+    {
+        GameObject serverCube = Instantiate(cube, position, Quaternion.identity);
+        NetworkServer.Spawn(serverCube);
+    }
+
+    [Command]
+    public void CmdDestroyObject(GameObject cube)
+    {
+        NetworkServer.Destroy(cube);
     }
 
     private Vector3 GetBlockPosition()

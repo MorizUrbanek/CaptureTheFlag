@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
+using Mirror;
 
-public class Target : MonoBehaviour
+public class Target : NetworkBehaviour
 {
-    public float health = 50f;
+    public float health;
 
-    public void TakeDamage(float damage)
+    public override void OnStartAuthority()
+    {
+        health = 50f;
+    }
+
+    public bool TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0)
         {
-            Die();
+            // assignAuthorityObj.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
+            //this.GetComponent<NetworkIdentity>().AssignClientAuthority(player.GetComponent<NetworkIdentity>().connectionToClient);
+
+            return true;
         }
+        return false;
     }
 
-    void Die()
-    {
-        Destroy(gameObject);
-    }
+
+    
 }

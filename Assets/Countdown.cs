@@ -7,9 +7,10 @@ public class Countdown : MonoBehaviour
 {
 
     public GameObject weapons;
+    public Weapon weapon;
     public PlaceCube ghostCube;
     TextManager text;
-    float startTime, updateSteps = 0.01f, countdownTime = 20f , endTime;
+    float startTime, updateSteps = 0.01f, countdownTime = 10f , endTime;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Countdown : MonoBehaviour
         if (Time.time >= endTime)
         {
             weapons.SetActive(true);
+            weapon.enabled = true;
             ghostCube.SetGhostCubeActive(false);
             ghostCube.enabled = false;
             CancelInvoke("UpdateCoundDown");
