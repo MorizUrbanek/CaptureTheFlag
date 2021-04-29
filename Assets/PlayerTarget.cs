@@ -5,24 +5,22 @@ using Mirror;
 
 public class PlayerTarget : NetworkBehaviour
 {
-    public float maxHealth = 50f;
-    public float damageperHit = 10f;
-    
-    public bool isAttacker;
-    private bool isDeath = false;// tookDamage = false;
+    [SerializeField] private const float maxHealth = 50f;
+
+    [SyncVar]
+    [SerializeField] private bool isAttacker;
 
     [SyncVar]
     [SerializeField] private float currentHealth;
 
-    public delegate void HealthChangedDelegate(float currentHealth);
-    public event HealthChangedDelegate EventHealthChanged;
+    //public delegate void HealthChangedDelegate(float currentHealth);
+    //public event HealthChangedDelegate EventHealthChanged;
 
     #region Server
     [Server]
     private void SetHealth(float value)
     {
         currentHealth = value;
-        EventHealthChanged?.Invoke(currentHealth);
     }
 
     public override void OnStartServer()
@@ -30,43 +28,23 @@ public class PlayerTarget : NetworkBehaviour
         SetHealth(maxHealth);
     }
 
-    [Command]
-    private void CmdDealDamage()
-    {
-        Debug.Log("dealingdamage");
-        SetHealth(Mathf.Max(currentHealth - damageperHit, 0));
-    }
-
     #endregion
 
     #region Client
+    //Todo death and respawn
+    //private void Update()
+    //{
+    //    if (!hasAuthority){return;}
 
-    [ClientCallback]
-    private void Update()
+    //    if (currentHealth != maxHealth)
+    //    {
+    //        Debug.Log(currentHealth);
+    //    }
+    //}
+
+    public void TakeDamage(float damage)
     {
-        if (!hasAuthority) { return; }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            CmdDealDamage();
-        }
-        // Debug.Log("tookdamage :"+tookDamage);
-        //if (tookDamage) 
-        //{
-        //    Debug.Log("dealdamge");
-        //    CmdDealDamage();
-        //    tookDamage = false;
-        //}
-    }
-
-    [ClientCallback]
-    public void TakeDamage()
-    {
-        if (!isDeath)
-        {
-            Debug.Log("tookdamge");
-           // tookDamage = true;
-        }
+        currentHealth = Mathf.Max(currentHealth - damage, 0);
     }
     #endregion
 
@@ -79,20 +57,8 @@ public class PlayerTarget : NetworkBehaviour
         }
     }
 
-    //private void OnEnable()
-    //{
-    //    EventHealthChanged += HandleHealthChange;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    EventHealthChanged -= HandleHealthChange;
-    //}
-
-    //[ClientRpc]
-    //private void HandleHealthChange(float currentHealth)
-    //{
-    //    this.currentHealth = currentHealth;
-    //}
-
+    public void SetIsAttacker(bool isAttacker)
+    {
+        this.isAttacker = isAttacker;
+    }
 }

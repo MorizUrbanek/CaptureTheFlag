@@ -29,11 +29,11 @@ public class NetworkManagerOverride : NetworkManager
         {
             if (playercount % 2 == 0)
             {
-                playertarget.isAttacker = true;
+                playertarget.SetIsAttacker(true);
             }
             else
             {
-                playertarget.isAttacker = false;
+                playertarget.SetIsAttacker(false);
             }
         }
         NetworkServer.AddPlayerForConnection(conn, player);

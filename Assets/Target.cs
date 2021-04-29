@@ -3,26 +3,39 @@ using Mirror;
 
 public class Target : NetworkBehaviour
 {
-    public float health;
+    public float maxHealth = 50f;
 
-    public override void OnStartAuthority()
+    [SyncVar]
+    [SerializeField] private float currentHealth;
+
+    //public delegate void HealthChangedDelegate(float currentHealth);
+    //public event HealthChangedDelegate EventHealthChanged;
+
+    #region Server
+    [Server]
+    private void SetHealth(float value)
     {
-        health = 50f;
+        currentHealth = value;
     }
+
+    public override void OnStartServer()
+    {
+        SetHealth(maxHealth);
+    }
+
+    #endregion
+
+    #region Client
 
     public bool TakeDamage(float damage)
     {
-        health -= damage;
-        if (health <= 0)
+        currentHealth = Mathf.Max(currentHealth - damage, 0);
+        if (currentHealth == 0)
         {
-            // assignAuthorityObj.GetComponent<NetworkIdentity>().AssignClientAuthority(this.GetComponent<NetworkIdentity>().connectionToClient);
-            //this.GetComponent<NetworkIdentity>().AssignClientAuthority(player.GetComponent<NetworkIdentity>().connectionToClient);
-
             return true;
         }
         return false;
     }
 
-
-    
+    #endregion
 }

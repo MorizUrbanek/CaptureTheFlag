@@ -9,7 +9,7 @@ public class LineFade : MonoBehaviour
     [SerializeField] private float speed;
 
     LineRenderer lr;
-    float lifetime = 0.5f;
+    float lifetime = .5f;
     
 
     void Start()
