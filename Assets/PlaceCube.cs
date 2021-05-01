@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Mirror;
 using Cinemachine;
+using System;
 
 public class PlaceCube : NetworkBehaviour
 {
@@ -11,6 +12,8 @@ public class PlaceCube : NetworkBehaviour
     public Camera fpsCam;
     public GameObject cube;
     public GameObject ghostCube;
+    public GameObject flag;
+    public GameObject ghostFlag;
     public float cubePlaceRange = 40f;
 
 
@@ -25,19 +28,17 @@ public class PlaceCube : NetworkBehaviour
     private Vector3 anchorPoint = new Vector3(-49.5f,-.49999f,-49.5f);
     private GameObject ghostCubesParent;
 
-   
-    //Start is called before the first frame update
-    //void Start()
-    //{
-    //    ghostCubesParent = new GameObject("ghostCubesParent");
-    //    CubesParent = new GameObject("CubesParent");
-    //    ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
-    //}
+    bool isFlagPlaceable = false;
+    bool isFlagPlaced = false;
+
 
     public override void OnStartAuthority()
     {
         ghostCubesParent = new GameObject("ghostCubesParent");
         ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
+
+        ghostFlag = Instantiate(ghostFlag, new Vector3(0f, 0f, 0f), Quaternion.identity);
+        //ghostFlag.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,8 +48,33 @@ public class PlaceCube : NetworkBehaviour
         {
             return;
         }
+
         ray = fpsCam.ScreenPointToRay(Input.mousePosition);
 
+        if (Input.GetKeyDown(KeyCode.F) && isFlagPlaced == false)
+        {
+            isFlagPlaceable = !isFlagPlaceable;
+        }
+
+        if (isFlagPlaceable && isFlagPlaced == false)
+        {
+            PlaceFlag();
+            ghostCubesParent.SetActive(false);
+            ghostFlag.SetActive(true);
+        }
+        else
+        {
+            ghostCubesParent.SetActive(true);
+            ghostFlag.SetActive(false);
+            PlaceCubes();
+        }
+
+
+       
+    }
+
+    private void PlaceCubes()
+    {
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
             ghostCubeCount++;
@@ -60,12 +86,12 @@ public class PlaceCube : NetworkBehaviour
             {
                 ghostCubeCount = maxGhostCubes - 1;
             }
-                
+
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            
+
             if (ghostCubeCount > 0)
             {
                 Destroy(ghostCubes[ghostCubeCount]);
@@ -108,12 +134,31 @@ public class PlaceCube : NetworkBehaviour
         }
     }
 
+    private void PlaceFlag()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Physics.Raycast(ray, out hit, cubePlaceRange);
+            if (hit.collider != null)
+            {
+                if (hit.normal.y == 1)
+                {
+                    CmdSpawnObject(GetBlockPosition());
+                    isFlagPlaceable = false;
+                    isFlagPlaced = true;
+                    ghostFlag.SetActive(false);
+                }
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
         if (!isLocalPlayer)
         {
             return;
         }
+
         Physics.Raycast(ray, out hit, cubePlaceRange);
         if (hit.collider != null)
         {
@@ -123,7 +168,8 @@ public class PlaceCube : NetworkBehaviour
                 {
                     ghostCubesParent.SetActive(true);
                 }
-                ghostCubesParent.transform.position = GetBlockPosition();
+                GameObject spawn = isFlagPlaceable ? ghostFlag : ghostCubesParent;
+                spawn.transform.position = GetBlockPosition();
                 currentState = isMirrored;
                 switch(mode)
                 {
@@ -217,8 +263,8 @@ public class PlaceCube : NetworkBehaviour
     [Command]
     public void CmdSpawnObject(Vector3 position)
     {
-        GameObject serverCube = Instantiate(cube, position, Quaternion.identity);
-        NetworkServer.Spawn(serverCube);
+        GameObject spawnObject = isFlagPlaceable ? Instantiate(flag, position, Quaternion.identity) : Instantiate(cube, position, Quaternion.identity);
+        NetworkServer.Spawn(spawnObject);
     }
 
     [Command]

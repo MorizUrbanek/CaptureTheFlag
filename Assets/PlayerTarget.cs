@@ -8,7 +8,7 @@ public class PlayerTarget : NetworkBehaviour
     [SerializeField] private const float maxHealth = 50f;
 
     [SyncVar]
-    [SerializeField] private bool isAttacker;
+    [SerializeField] public bool isAttacker;
 
     [SyncVar]
     [SerializeField] private float currentHealth;

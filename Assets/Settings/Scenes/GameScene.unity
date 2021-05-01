@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.43685496, g: 0.48450196, b: 0.5647583, a: 1}
+  m_IndirectSpecularColor: {r: 0.43685544, g: 0.48450232, b: 0.56475914, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -948,6 +948,7 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 4401455378658636964, guid: c3d91bff4dfc67443bdefadc033241db, type: 3}
   - {fileID: 7125764839596880902, guid: 7abf1f88c0cceaf4b91f129e0c2214b8, type: 3}
+  - {fileID: 1125488116802666102, guid: 2739a632c3b68494ebfb53b6f6da4233, type: 3}
 --- !u!4 &1978309864
 Transform:
   m_ObjectHideFlags: 0
@@ -1173,7 +1174,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2077123505
