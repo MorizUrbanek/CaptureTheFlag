@@ -9,8 +9,10 @@ public class NetworkManagerOverride : NetworkManager
     public static NetworkManagerOverride instance = null;
     public static int roundcount;
     static private int playercount;
+    public int[] playerScores;
     static private GameObject[] players;
     [SerializeField] private Countdown countdown;
+    [SerializeField] private ScoreManager score;
 
     public override void OnStartServer()
     {
@@ -24,6 +26,7 @@ public class NetworkManagerOverride : NetworkManager
         }
         playercount = 0;
         roundcount = 0;
+        playerScores = new int[] {0,0,0,0};
         players = new GameObject[4];
     }
 
@@ -54,7 +57,7 @@ public class NetworkManagerOverride : NetworkManager
         }
         playertarget.SetSpawnPosition(startPos.position);
         NetworkServer.AddPlayerForConnection(conn, player);
-        if (playercount == 1)
+        if (playercount == 2)
         {
             countdown.StartCountDown();
             EnableCubePlacer(true);
@@ -90,12 +93,13 @@ public class NetworkManagerOverride : NetworkManager
     public void ChangeIsAttacker()
     {
         PlayerTarget playertarget;
+        int count = 1;
         foreach (GameObject player in players.Where(i => i != null))
         {
             playertarget = player.GetComponent<PlayerTarget>();
             if (playertarget != null)
             {
-                if (playercount % 2 != 0)
+                if (count % 2 != 0)
                 {
                     playertarget.SetIsAttacker(true);
                 }
@@ -104,27 +108,68 @@ public class NetworkManagerOverride : NetworkManager
                     playertarget.SetIsAttacker(false);
                 }
             }
+            count++;
         }
     }
 
     public void RoundOver(bool coutdownover)
     {
-        roundcount++;
-        //check who won and change score
+        bool addToscore = true;
+        int count = 0;
         PlayerTarget playerTarget;
+        if (roundcount == 0 || roundcount == 4)
+        {
+            instance.EnableCubePlacer(false);
+            addToscore = false;
+        }
+
         foreach (GameObject player in players.Where(i => i != null))
         {
             playerTarget = player.GetComponent<PlayerTarget>();
             if (playerTarget != null)
             {
+                if (addToscore)
+                {
+                    if (coutdownover)
+                    {
+                        if (!playerTarget.isAttacker)
+                        {
+                            playerScores[count]++;
+                        }
+                    }
+                    else
+                    {
+                        if (playerTarget.isAttacker)
+                        {
+                            playerScores[count]++;
+                        }
+                    }
+                }
                 playerTarget.ResetToSpawnPoint();
             }
+            count++;
         }
-        countdown.StartCountDown();
+        score.RpcUpdateScore(playerScores[0],playerScores[1]);
+        
+        if (roundcount == 3)
+        {
+            instance.ChangeIsAttacker();
+            instance.EnableCubePlacer(true);
+        }
+        if (roundcount == 7)
+        {
+            instance.GameOver();
+        }
+        else
+        {
+            countdown.StartCountDown();
+        }
+        roundcount++;
     }
 
     public void GameOver()
     {
+        score.RpcUpdateScore(playerScores[0], playerScores[1]);
         Debug.Log("GameOver");
     }
 }

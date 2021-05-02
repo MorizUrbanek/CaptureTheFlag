@@ -18,7 +18,6 @@ public class CollectFlag : MonoBehaviour
 
     private void RoundWin()
     {
-        //TODO: Win
-        Debug.Log("Attacker Won");
+        NetworkManagerOverride.instance.RoundOver(false);
     }
 }

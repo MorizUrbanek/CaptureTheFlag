@@ -51,13 +51,13 @@ public class PlayerTarget : NetworkBehaviour
     #endregion
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Flag" && isAttacker)
-        {
-            Destroy(other.gameObject);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.tag == "Flag" && isAttacker)
+    //    {
+    //        Destroy(other.gameObject);
+    //    }
+    //}
 
     public void SetIsAttacker(bool isAttacker)
     {

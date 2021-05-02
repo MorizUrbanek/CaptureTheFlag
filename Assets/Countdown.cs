@@ -11,7 +11,7 @@ public class Countdown : NetworkBehaviour
     //public PlaceCube placeCube;
     TextManager text;
     float startTime, updateSteps = 0.01f , endTime;
-    [SerializeField] private const float countdownTime = 10f;
+    [SerializeField] private const float countdownTime = 5f;
 
     [SyncVar]
     float currentime;
@@ -83,19 +83,6 @@ public class Countdown : NetworkBehaviour
             currentime = 0;
             CancelInvoke("UpdateCoundDown");
             text.ClearText();
-            if (NetworkManagerOverride.roundcount == 0 || NetworkManagerOverride.roundcount == 4)
-            {
-                NetworkManagerOverride.instance.EnableCubePlacer(false);
-            }
-            else if (NetworkManagerOverride.roundcount == 3)
-            {
-                NetworkManagerOverride.instance.ChangeIsAttacker();
-                NetworkManagerOverride.instance.EnableCubePlacer(true);
-            }
-            if (NetworkManagerOverride.roundcount == 7)
-            {
-                NetworkManagerOverride.instance.GameOver();
-            }
             NetworkManagerOverride.instance.RoundOver(true);
         }
         else
