@@ -1,16 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ChangeWeapon : MonoBehaviour
+public class ChangeWeapon : NetworkBehaviour
 {
     public ShowWeapon showWeapon;
+    [SerializeField] private const int startWeapon = 1;
 
-    int selectedWeapon = 0;
+    [SyncVar]
+    [SerializeField] private int selectedWeapon;
+
     int weaponcount;
 
+    #region Server
+    [Server]
+    private void SetWeapon(int value)
+    {
+        selectedWeapon = value;
+    }
 
-    private void Start()
+    public override void OnStartServer()
+    {
+        SetWeapon(startWeapon);
+    }
+    #endregion
+
+    private void OnEnable()
     {
         weaponcount = transform.childCount;
         SwitchWeapon();

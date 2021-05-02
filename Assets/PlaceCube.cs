@@ -30,9 +30,17 @@ public class PlaceCube : NetworkBehaviour
 
     bool isFlagPlaceable = false;
     bool isFlagPlaced = false;
+    public void OnEnable()
+    {
+        SetGhostCubeActive(true);
+    }
 
+    private void OnDisable()
+    {
+        SetGhostCubeActive(false);
+    }
 
-    public override void OnStartAuthority()
+    private void Start()
     {
         ghostCubesParent = new GameObject("ghostCubesParent");
         ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
@@ -280,8 +288,12 @@ public class PlaceCube : NetworkBehaviour
             + anchorPoint);
     }
 
-    public void SetGhostCubeActive(bool active)
+    private void SetGhostCubeActive(bool active)
     {
+        if (ghostCubesParent == null)
+        {
+            return;
+        }
         ghostCubesParent.SetActive(active);
     }
 }

@@ -8,6 +8,9 @@ public class PlayerTarget : NetworkBehaviour
     [SerializeField] private const float maxHealth = 50f;
 
     [SyncVar]
+    [SerializeField] private Vector3 spawnPoint;
+
+    [SyncVar]
     [SerializeField] public bool isAttacker;
 
     [SyncVar]
@@ -28,23 +31,22 @@ public class PlayerTarget : NetworkBehaviour
         SetHealth(maxHealth);
     }
 
+    private void OnEnable()
+    {
+        currentHealth = maxHealth;
+    }
+
     #endregion
 
     #region Client
-    //Todo death and respawn
-    //private void Update()
-    //{
-    //    if (!hasAuthority){return;}
-
-    //    if (currentHealth != maxHealth)
-    //    {
-    //        Debug.Log(currentHealth);
-    //    }
-    //}
 
     public void TakeDamage(float damage)
     {
         currentHealth = Mathf.Max(currentHealth - damage, 0);
+        if (currentHealth == 0)
+        {
+            NetworkManagerOverride.instance.SetIsDeath(true, this.gameObject);
+        }
     }
     #endregion
 
@@ -61,4 +63,26 @@ public class PlayerTarget : NetworkBehaviour
     {
         this.isAttacker = isAttacker;
     }
+
+    public void SetSpawnPosition(Vector3 spawnPosition)
+    {
+        this.spawnPoint = spawnPosition;
+    }
+
+    public Vector3 GetSpawnPosition()
+    {
+        return spawnPoint;
+    }
+
+    public void ResetToSpawnPoint()
+    {
+        RpcResetToSpawnPoint();
+    }
+
+    [ClientRpc]
+    private void RpcResetToSpawnPoint()
+    {
+        transform.position = spawnPoint;
+    }
+
 }
