@@ -67,10 +67,7 @@ public class PlaceCube : NetworkBehaviour
             ghostCubesParent.SetActive(true);
             ghostFlag.SetActive(false);
             PlaceCubes();
-        }
-
-
-       
+        }      
     }
 
     private void PlaceCubes()
