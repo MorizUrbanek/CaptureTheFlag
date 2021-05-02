@@ -956,9 +956,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2646696695254662031}
   - {fileID: 4385354108061370414}
   - {fileID: 6292516742063481909}
-  - {fileID: 2646696695254662031}
   m_Father: {fileID: 3569171070427813163}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1112,6 +1112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2646696695254662031}
   - component: {fileID: 3527274352577474454}
+  - component: {fileID: 4636141225813205014}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -1133,7 +1134,7 @@ Transform:
   - {fileID: 5469954621872651531}
   - {fileID: 928047442740005681}
   m_Father: {fileID: 543342817004159575}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3527274352577474454
 MonoBehaviour:
@@ -1147,7 +1148,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a92b4664df0e0438852c9eb1979989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   showWeapon: {fileID: 5500822318340834111}
+  selectedWeapon: 0
+--- !u!114 &4636141225813205014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2630401910293112049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &2978258497228711476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1158,6 +1179,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5469954621872651531}
   - component: {fileID: 6010822877378571322}
+  - component: {fileID: 9174505554899755783}
+  - component: {fileID: 1272865598580087130}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -1199,6 +1222,44 @@ MonoBehaviour:
   range: 150
   shootPoint: {fileID: 3463168049704559842}
   damagePlayer: 1
+--- !u!114 &9174505554899755783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978258497228711476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
+--- !u!114 &1272865598580087130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978258497228711476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
+  interpolateScale: 1
+  syncScale: 1
 --- !u!1 &3157545848989181461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,7 +1272,6 @@ GameObject:
   - component: {fileID: 1037300536143496768}
   - component: {fileID: 1163066569462283709}
   - component: {fileID: 6734673872846820892}
-  - component: {fileID: 3269882001769527263}
   m_Layer: 0
   m_Name: CountDown
   m_TagString: Untagged
@@ -1348,21 +1408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5ec76a1e4927054583ceb3e4137be6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3269882001769527263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3157545848989181461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ad971726b0f71648903d72b5f2f33a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapons: {fileID: 2630401910293112049}
-  weapon: {fileID: 4292832428057087583}
-  ghostCube: {fileID: 7576545732619155688}
 --- !u!1 &3441968655391564870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2416,7 +2461,7 @@ RectTransform:
   - {fileID: 6951325502914938600}
   - {fileID: 6496053466974253223}
   m_Father: {fileID: 543342817004159575}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2557,7 +2602,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 543342817004159575}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7085832800820230738
 MonoBehaviour:
@@ -3767,6 +3812,7 @@ GameObject:
   - component: {fileID: 7576545732619155688}
   - component: {fileID: 1659150218969498846}
   - component: {fileID: 4292832428057087583}
+  - component: {fileID: 3219098083632116814}
   m_Layer: 0
   m_Name: FPSPlayer
   m_TagString: Player
@@ -3895,7 +3941,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7678815370018263760}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87192ba225e660c41aa0d9570ef63c8e, type: 3}
   m_Name: 
@@ -3922,9 +3968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  maxHealth: 50
-  damageperHit: 10
-  tookDamage: 0
+  spawnPosition: {x: 0, y: 0, z: 0}
   isAttacker: 0
   currentHealth: 0
 --- !u!114 &4292832428057087583
@@ -3944,6 +3988,28 @@ MonoBehaviour:
   fpsCam: {fileID: 3144513929407579642}
   bullettrail: {fileID: 7125764839596880902, guid: 7abf1f88c0cceaf4b91f129e0c2214b8,
     type: 3}
+--- !u!114 &3219098083632116814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7678815370018263760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2acc9b89ecbc41647b4563a4a5546579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  placeCube: {fileID: 7576545732619155688}
+  weapon: {fileID: 4292832428057087583}
+  weaponholder: {fileID: 2630401910293112049}
+  move: {fileID: 6432933749065089831}
+  playerTarget: {fileID: 1659150218969498846}
+  body: {fileID: 4340718175218152726}
+  placeCubeisEnabled: 0
+  isDeath: 0
 --- !u!1 &7772305866067209876
 GameObject:
   m_ObjectHideFlags: 0

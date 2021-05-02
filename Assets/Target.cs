@@ -3,13 +3,10 @@ using Mirror;
 
 public class Target : NetworkBehaviour
 {
-    public float maxHealth = 50f;
+    [SerializeField] private const float maxHealth = 50f;
 
     [SyncVar]
     [SerializeField] private float currentHealth;
-
-    //public delegate void HealthChangedDelegate(float currentHealth);
-    //public event HealthChangedDelegate EventHealthChanged;
 
     #region Server
     [Server]

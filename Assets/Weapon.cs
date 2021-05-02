@@ -15,6 +15,10 @@ public class Weapon : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
         ray = fpsCam.ScreenPointToRay(Input.mousePosition);
 
         if (Input.GetButtonDown("Fire1"))

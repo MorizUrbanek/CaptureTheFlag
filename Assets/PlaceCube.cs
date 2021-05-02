@@ -25,16 +25,17 @@ public class PlaceCube : NetworkBehaviour
     private Vector3 anchorPoint = new Vector3(-49.5f,-.49999f,-49.5f);
     private GameObject ghostCubesParent;
 
-   
-    //Start is called before the first frame update
-    //void Start()
-    //{
-    //    ghostCubesParent = new GameObject("ghostCubesParent");
-    //    CubesParent = new GameObject("CubesParent");
-    //    ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
-    //}
+    public void OnEnable()
+    {
+        SetGhostCubeActive(true);
+    }
 
-    public override void OnStartAuthority()
+    private void OnDisable()
+    {
+        SetGhostCubeActive(false);
+    }
+
+    private void Start()
     {
         ghostCubesParent = new GameObject("ghostCubesParent");
         ghostCubes[ghostCubeCount] = Instantiate(ghostCube, new Vector3(0, 0, 0), Quaternion.identity, ghostCubesParent.transform);
@@ -237,8 +238,12 @@ public class PlaceCube : NetworkBehaviour
             + anchorPoint);
     }
 
-    public void SetGhostCubeActive(bool active)
+    private void SetGhostCubeActive(bool active)
     {
+        if (ghostCubesParent == null)
+        {
+            return;
+        }
         ghostCubesParent.SetActive(active);
     }
 }

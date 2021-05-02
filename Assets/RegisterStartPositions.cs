@@ -7,7 +7,6 @@ public class RegisterStartPositions : NetworkBehaviour
 {
     public override void OnStartServer()
     {
-        base.OnStartServer();
         foreach (Transform spawnPoint in transform)
         {
             NetworkManager.RegisterStartPosition(spawnPoint);
